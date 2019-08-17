@@ -25,32 +25,34 @@ module.exports = (app) => {
         const {
             firstName,
             lastName,
-            email,
             password
+        } = body;
+        let {
+            email
         } = body;
 
         if (!firstName) {
-            return res.end({
+            return res.send({
                 success: false,
                 message: 'Error: First name cannot be blank.'
             });
         }
         if (!lastName) {
-            return res.end({
+            return res.send({
                 success: false,
-                message: 'Error: Last name cannot be blank.'
+                message: 'Error: First name cannot be blank.'
             });
         }
         if (!email) {
-            return res.end({
+            return res.send({
                 success: false,
-                message: 'Email cannot be blank.'
+                message: 'Error: First name cannot be blank.'
             });
         }
         if (!password) {
-            return res.end({
+            return res.send({
                 success: false,
-                message: 'Error: Password cannot be blank.'
+                message: 'Error: First name cannot be blank.'
             });
         }
 
@@ -65,14 +67,14 @@ module.exports = (app) => {
             email: email
         }, (err, previousUsers) => {
             if (err) {
-                return res.end({
+                return res.send({
                     sucess: false,
                     message: 'Error: Server error'
                 });
             } else if (previousUsers.length > 0) {
                 return res.send({
                     sucess: false,
-                    message: 'Error: Server error'
+                    message: 'Error: Account already exist.'
                 });
             } 
 
@@ -82,7 +84,7 @@ module.exports = (app) => {
             newUser.email = email;
             newUser.firstName = firstName;
             newUser.lastName = lastName;
-            newUser.password = newUser.generateHash(password)
+            newUser.password = newUser.generateHash(password);
             newUser.save((err, user) => {
                 if (err) {
                     return res.send({
@@ -90,7 +92,7 @@ module.exports = (app) => {
                         message: 'Error: Server error'
                     });
                 }
-                return res.end({
+                return res.send({
                     success: true,
                     message: 'Signed up'
                 });
